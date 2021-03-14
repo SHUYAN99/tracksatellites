@@ -5,7 +5,7 @@ import ObserverInfo from "./ObserverInfo";
 const Main = () => {
     return (
         <Row>
-            <Col span={8}>
+            <Col span={86}>
                 <ObserverInfo />
             </Col>
             <Col span={16}>

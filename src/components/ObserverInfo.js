@@ -18,7 +18,7 @@ const ObserverInfo = () => {
 
     return (
         <div className="observer-info-container">
-            <Title level={5}>&nbsp; Please enter the ObserverInfo ...</Title>
+            <Title level={5}>&nbsp; Enter the ObserverInfo.</Title>
             <Form
                 {...layout}
                 initialValues={
@@ -32,24 +32,24 @@ const ObserverInfo = () => {
                 onFinish={onFormFinish}
             >
                 <Form.Item label="Longitude" name="longitude" rules={[{required: true, message: "Please enter a valid longitude!"}]}>
-                    <InputNumber min={-180} max={180} style={{ width: "40%" }} />
+                    <InputNumber min={-180} max={180} style={{ width: "60%" }} />
                 </Form.Item>
 
                 <Form.Item label="Latitude" name="latitude" rules={[{required: true, message: "Please enter a valid latitude!"}]}>
-                    <InputNumber min={-90} max={90} style={{ width: "40%" }} />
+                    <InputNumber min={-90} max={90} style={{ width: "60%" }} />
                 </Form.Item>
 
                 <Form.Item label="Altitude(m)" name="altitude" rules={[{required: true, message: "Please enter a valid altitude!"}]}>
-                    <InputNumber min={-413} max={8850} style={{ width: "40%" }} />
+                    <InputNumber min={-413} max={8850} style={{ width: "60%" }} />
                 </Form.Item>
 
                 <Form.Item label="Radius" name="radius" rules={[{required: true, message: "Please enter a valid radius!"}]}>
-                    <InputNumber min={0} max={90} style={{ width: "40%" }} />
+                    <InputNumber min={0} max={90} style={{ width: "60%" }} />
                 </Form.Item>
 
                 <Form.Item {...tailLayout}>
                     <Button type="primary" htmlType="submit">
-                        Find nearby satellites!
+                        Find satellites!
                     </Button>
                 </Form.Item>
                 
