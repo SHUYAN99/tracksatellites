@@ -2,9 +2,10 @@ import Title from "antd/lib/typography/Title";
 import React from "react";
 import { InputNumber, Form, Button, Divider } from "antd";
 
-const ObserverInfo = () => {
+const ObserverInfo = (props) => {
     const onFormFinish = (observerInfo) => {
         // TODO: call N2YO API to get nearby satellites information
+        props.findSatellitesOnClick(observerInfo);
     }
 
     const layout = {
