@@ -5,7 +5,8 @@ import satelliteImage from "../images/satellite.svg";
 
 const SatelliteList = ({
     satList,
-    updateSatelliteList
+    updateSatelliteList,
+    loading
 }) => {
 
     // function to update selected / unselected satellites
@@ -36,6 +37,7 @@ const SatelliteList = ({
                 className="sat-list"
                 itemLayout="horizontal"
                 dataSource={satList}
+                loading={loading}
                 renderItem={
                     item => (
                         <List.Item actions={[<Checkbox onChange={(e) => onSelectionChange(e.target.checked, item)} checked={item.selected} />]}>
