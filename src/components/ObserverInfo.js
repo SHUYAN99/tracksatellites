@@ -49,7 +49,7 @@ const ObserverInfo = (props) => {
                 </Form.Item>
 
                 <Form.Item {...tailLayout}>
-                    <Button type="primary" htmlType="submit" disabled={props.loading}>
+                    <Button type="ghost" htmlType="submit" disabled={props.loading}>
                         Find satellites!
                     </Button>
                 </Form.Item>

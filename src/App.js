@@ -18,9 +18,9 @@ function App() {
       <Content>
         <Main />
       </Content>
-      <Footer>
-        (c)2021 Tracking Starlink Satellites. All Rights Reserved. Website Made by Shuyan.
-      </Footer>
+      {/* <Footer> */}
+        {/* (c)2021 Tracking Starlink Satellites. All Rights Reserved. Website Made by Shuyan. */}
+      {/* </Footer> */}
     </Layout>
   );
 }
