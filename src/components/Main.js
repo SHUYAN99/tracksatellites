@@ -11,6 +11,8 @@ const Main = () => {
 
     const [loading, setLoading] = useState(false);
     const [satList, setSatList] = useState([]);
+    const [tracking, setTracking] = useState(false);
+
     const findSatellitesOnClick = (nextObserverInfo) => {
         
         setLoading(true);
@@ -39,16 +41,20 @@ const Main = () => {
                 <ObserverInfo
                     findSatellitesOnClick={findSatellitesOnClick} 
                     loading={loading}
+                    disabled={tracking}
                 />
                 <SatelliteList
                     satList={satList}
                     updateSatelliteList={setSatList}
                     loading={loading}
+                    disabled={tracking}
                 />
             </Col>
             <Col span={16}>
                 <WorldMap
                     selectedSatellites={satList.filter(sat => sat.selected)} 
+                    setTracking={setTracking}
+                    disabled={tracking}
                 />
             </Col>
         </Row>
