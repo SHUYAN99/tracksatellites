@@ -4,7 +4,8 @@ import starlinkLogo from './images/starlink_logo.svg';
 import { Layout } from 'antd';
 import Main from './components/Main';
 
-const { Header, Footer, Content } = Layout;
+// const { Header, Footer, Content } = Layout;
+const { Header, Content } = Layout;
 
 function App() {
   return (

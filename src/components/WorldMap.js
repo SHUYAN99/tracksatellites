@@ -2,6 +2,9 @@ import React, { useState, useRef } from "react";
 import { ComposableMap, Geographies, Geography, Graticule, Sphere } from "react-simple-maps";
 // progress bar
 import { Button, InputNumber, Progress } from "antd";
+import { N2YO_API_KEY, N2YO_BASE_URL } from "../constants";
+
+export const POSITION_API_BASE_URL = `${N2YO_BASE_URL}/positions`;
 
 const geoUrl = 
 "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
@@ -12,7 +15,7 @@ const progressStatus = {
     Complete: 'Complete'
 }
 
-const WorldMap = ( { selectedSatellites, setTracking, disabled } ) => {
+const WorldMap = ( { selectedSatellites, setTracking, disabled, observerInfo } ) => {
     
     const [duration, setDuration] = useState(1);
     const [progressPercentage, setProgressPercentage] = useState(0);
@@ -33,12 +36,18 @@ const WorldMap = ( { selectedSatellites, setTracking, disabled } ) => {
         }
     }
 
-    const trackOnClick = () => {
-        setProgressText(`Tracking for ${duration} minutes`);
-        setProgressPercentage(0);
-        setTracking(true);
+    const fetchPositions = () => {
+        const { longitude, latitude, altitude } = observerInfo;
+        return selectedSatellites.map(
+            (sat) => {
+                const id = sat.satid;
+                return fetch(`${POSITION_API_BASE_URL}/${id}/${latitude}/${longitude}/${altitude}/${duration * 60}/&apiKey=${N2YO_API_KEY}`).then(response => response.json());
+            }
+        )
+    }
+
+    const startTracking = () => {
         let curMin = 0;
-        // return a timer id
         timerIdContainer.current = setInterval(() => {
             setProgressPercentage((curMin / duration) * 100);
             if (curMin === duration) {
@@ -49,6 +58,24 @@ const WorldMap = ( { selectedSatellites, setTracking, disabled } ) => {
             }
             curMin++;
         }, 1000);
+    }
+
+    const trackOnClick = () => {
+        setProgressText(progressStatus.Tracking);
+        setProgressPercentage(0);
+        setTracking(true);
+
+        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
+        Promise.all(fetchPositions()).then(
+            (data) => {
+                console.log(data);
+                startTracking();
+            }
+        ).catch(
+            () => {
+                // TODO: add some fallback UI handler here
+            }
+        )
     }
     
     return (
@@ -62,7 +89,7 @@ const WorldMap = ( { selectedSatellites, setTracking, disabled } ) => {
                 <Progress style={{ width: "500px" }} percent={progressPercentage} format={() => progressText}/>
                 {/* abort would remain visible at completion if using the line below */}
                 {/* { timerIdContainer.current && <Button type="ghost" onClick={abortOnClick} style={{marginLeft: "140px"}}>Abort</Button>} */}
-                { disabled && <Button type="ghost" onClick={abortOnClick} style={{marginLeft: "140px"}}>Abort</Button>}
+                { disabled && <Button type="ghost" onClick={abortOnClick} style={{marginLeft: "60px"}}>Abort</Button>}
 
             </div>
 

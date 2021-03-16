@@ -12,12 +12,15 @@ const Main = () => {
     const [loading, setLoading] = useState(false);
     const [satList, setSatList] = useState([]);
     const [tracking, setTracking] = useState(false);
+    const [observerInfo, setObserverInfo] = useState({});
 
     const findSatellitesOnClick = (nextObserverInfo) => {
         
         setLoading(true);
 
+        setObserverInfo(nextObserverInfo);
         const { longitude, latitude, altitude, radius } = nextObserverInfo;
+        
         fetch(`${ABOVE_API_BASE_URL}/${latitude}/${longitude}/${altitude}/${radius}/${SAT_CATEGORY}/&apiKey=${N2YO_API_KEY}`)
         .then(response => response.json())
         .then(data => {
@@ -55,6 +58,7 @@ const Main = () => {
                     selectedSatellites={satList.filter(sat => sat.selected)} 
                     setTracking={setTracking}
                     disabled={tracking}
+                    observerInfo={observerInfo}
                 />
             </Col>
         </Row>

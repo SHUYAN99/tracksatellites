@@ -13,7 +13,7 @@
   - while tracking, tell Main.js that tracking is ongoing, disable everything else
   - while tracking, give users a way to abort the tracking
 
-
-
-
 ![alt text](https://github.com/SHUYAN99/tracksatellites/blob/main/pictures/structure2.png?raw=true)
+
+## Fetch the position prediction data for selected satellites to display the animation on the map.
+![alt text](https://github.com/SHUYAN99/tracksatellites/blob/main/pictures/structure3.png?raw=true)
