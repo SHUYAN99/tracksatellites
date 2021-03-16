@@ -26,4 +26,5 @@
   - We use states to keep track of relevant information:`const [markersInfo, setMarkersInfo] = useState([])`;`const [currentTimestamp, setCurrentTimestamp] = useState('')`.
 
   Demo Video:
+  
   [![Alt text](https://img.youtube.com/vi/Pn0ul2UObzQ/0.jpg)](https://youtu.be/Pn0ul2UObzQ)
