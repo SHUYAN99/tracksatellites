@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { ComposableMap, Geographies, Geography, Graticule, Sphere } from "react-simple-maps";
+import { ComposableMap, Geographies, Geography, Graticule, Sphere, Marker } from "react-simple-maps";
 // progress bar
 import { Button, InputNumber, Progress } from "antd";
 import { N2YO_API_KEY, N2YO_BASE_URL } from "../constants";
@@ -25,6 +25,8 @@ const WorldMap = ( { selectedSatellites, setTracking, disabled, observerInfo } )
     // cannot use let timerId = undefined. Somehow, some functions cannot sense the change in timerId
     // useRef is a good wrapper to use here
     const timerIdContainer = useRef(undefined);
+    const [markersInfo, setMarkersInfo] = useState([]);
+    const [currentTimestamp, setCurrentTimestamp] = useState('');
     
     const abortOnClick = () => {
         if (timerIdContainer.current) {
@@ -46,30 +48,51 @@ const WorldMap = ( { selectedSatellites, setTracking, disabled, observerInfo } )
         )
     }
 
-    const startTracking = () => {
-        let curMin = 0;
+    const updateMarker = (data, index) => {
+        setMarkersInfo(data.map((sat) => {
+            return {
+                lon: sat.positions[index].satlongitude,
+                lat: sat.positions[index].satlatitude,
+                name: sat.info.satname
+            }
+        }))
+    }
+    const startTracking = (data) => {
+        let index = 59;
+        let end = data[0].positions.length - 1;
+        setTracking(true);
+
+        setCurrentTimestamp(new Date(data[0].positions[index].timestamp * 1000).toString());
+        setProgressPercentage((index / end) * 100);
+        updateMarker(data, index);
+        
         timerIdContainer.current = setInterval(() => {
-            setProgressPercentage((curMin / duration) * 100);
-            if (curMin === duration) {
+            index += 60;
+            setProgressPercentage((index / end) * 100);
+            if (index >= end) {
                 setProgressText(progressStatus.Complete);
                 setTracking(false);
                 clearInterval(timerIdContainer.current);
                 timerIdContainer.current = undefined;
+                return; // if not returning, codes below (outside if) will still
+                // be executed on the last run, which is unnecessary
             }
-            curMin++;
+
+            updateMarker(data, index);
+            setCurrentTimestamp(new Date(data[0].positions[index].timestamp * 1000).toString());
+
         }, 1000);
     }
 
     const trackOnClick = () => {
         setProgressText(progressStatus.Tracking);
         setProgressPercentage(0);
-        setTracking(true);
 
         // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
         Promise.all(fetchPositions()).then(
             (data) => {
-                console.log(data);
-                startTracking();
+                // console.log(data);
+                startTracking(data);
             }
         ).catch(
             () => {
@@ -93,7 +116,6 @@ const WorldMap = ( { selectedSatellites, setTracking, disabled, observerInfo } )
 
             </div>
 
-
             <ComposableMap 
                 projectionConfig={{ scale: 145 }} 
                 style={{ height: "850px", marginTop: "-10px", marginLeft: "68px", marginBottom: "-200px" }}>
@@ -112,8 +134,19 @@ const WorldMap = ( { selectedSatellites, setTracking, disabled, observerInfo } )
                                 ))
                         }
                     </Geographies>
+                    {
+                        markersInfo.map(
+                            (marker) => 
+                            <Marker coordinates={[marker.lon, marker.lat]}>
+                                <circle r={4} fill="#F53" />
+                                <text>{marker.name}</text>
+                            </Marker>
+                        )
+                    }
             </ComposableMap>
-
+            <div className="time-stamp-container" style={{textAlign: "center", marginTop: "60px"}}>
+                <b>{currentTimestamp}</b>
+            </div>
         </>
     )
 }

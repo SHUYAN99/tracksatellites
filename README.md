@@ -17,3 +17,10 @@
 
 ## Fetch the position prediction data for selected satellites to display the animation on the map.
 ![alt text](https://github.com/SHUYAN99/tracksatellites/blob/main/pictures/structure3.png?raw=true)
+- use the observerInfo and duration requirements to call N2YO API and get position information for satellites selected for tracking
+- use the position information and [React-simple-maps / marker](https://www.react-simple-maps.io/docs/marker/) to visualize (draw) these points on the map at each time step
+  - After we get the positions data, we setInterval(**function that puts a marker down for each selected satellite**, 1000).
+  - On every **next** second, we clear previous marker(s), and put down new ones on the map.
+  - Display the "current timestamp" while tracking, which is different from real rorld time.
+
+  - We use states to keep track of relevant information:`const [markersInfo, setMarkersInfo] = useState([])`;`const [currentTimestamp, setCurrentTimestamp] = useState('')`.

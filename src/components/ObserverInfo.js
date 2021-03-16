@@ -1,6 +1,6 @@
 import Title from "antd/lib/typography/Title";
 import React from "react";
-import { InputNumber, Form, Button, Divider } from "antd";
+import { InputNumber, Form, Button } from "antd";
 
 const ObserverInfo = (props) => {
     const onFormFinish = (observerInfo) => {
