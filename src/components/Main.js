@@ -47,7 +47,9 @@ const Main = () => {
                 />
             </Col>
             <Col span={16}>
-                <WorldMap />
+                <WorldMap
+                    selectedSatellites={satList.filter(sat => sat.selected)} 
+                />
             </Col>
         </Row>
     )
